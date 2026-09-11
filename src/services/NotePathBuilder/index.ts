@@ -1,7 +1,6 @@
 import { JALALI_MONTHS_NAME, SEASONS_NAME } from "src/constants";
 import type PersianCalendarPlugin from "src/main";
-import type { TLocale } from "src/types";
-import type { TDateEngineContext, TWeekPathAnchor } from "src/types";
+import type { TLocale, TDateEngineContext, TWeekPathAnchor } from "src/types";
 import { compilePattern, formatPattern } from "src/utils/dateEngine";
 import {
 	getWeekStartCalculator,
@@ -70,8 +69,12 @@ export default class NotePathBuilder {
 		const path = this.normalizeFolderPath(this.plugin.setting.weeklyNotesPath);
 		if (!path) return false;
 
-		const compiled = compilePattern(path);
-		return compiled.fields.some((field) => WEEK_PATH_DATE_FIELDS.has(field));
+		try {
+			const compiled = compilePattern(path);
+			return compiled.fields.some((field) => WEEK_PATH_DATE_FIELDS.has(field));
+		} catch {
+			return false;
+		}
 	}
 
 	private getWeeklyAnchor(
