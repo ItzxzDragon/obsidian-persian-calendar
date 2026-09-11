@@ -71,6 +71,12 @@ describe("NotePathBuilder.buildEngineContext", () => {
 			week: undefined,
 		});
 	});
+
+	it("preserves an explicitly supplied week number", () => {
+		const builder = createBuilder();
+		const ctx = builder.buildEngineContext({ jy: 1403, jm: 1, jd: 1, week: 7 });
+		expect(ctx.week).toBe(7);
+	});
 });
 
 describe("NotePathBuilder - mixed-calendar dynamic paths (regression)", () => {
@@ -84,8 +90,8 @@ describe("NotePathBuilder - mixed-calendar dynamic paths (regression)", () => {
 		expect(() => builder.buildYearlyNotePath(1403)).not.toThrow();
 	});
 
-	it("resolves YYYY/jQQQQ for the yearly note path", () => {
-		const builder = createBuilder({ yearlyNotesPath: "YYYY/jQQQQ" });
+	it("resolves jYYYY/jQQQQ for the yearly note path", () => {
+		const builder = createBuilder({ yearlyNotesPath: "jYYYY/jQQQQ" });
 		expect(() => builder.buildYearlyNotePath(1403)).not.toThrow();
 	});
 
@@ -124,6 +130,20 @@ describe("NotePathBuilder - mixed-calendar dynamic paths (regression)", () => {
 	it("still resolves purely Jalali seasonal paths", () => {
 		const builder = createBuilder({ seasonalNotesPath: "jYYYY/jQQQQ" });
 		expect(() => builder.buildSeasonalNotePath(1403, 1)).not.toThrow();
+	});
+
+	it("resolves the weekly week token in a dynamic weekly path", () => {
+		const builder = createBuilder({
+			weeklyNotesPath: "jYYYY/jQQQQ/jMM - jMMMM/ww",
+		});
+		const { filePath } = builder.buildWeeklyNotePath(1403, 7);
+		expect(filePath).toMatch(/1403\/.*\/01 - Farvardin\/07\//);
+	});
+
+	it("resolves the unpadded weekly week token", () => {
+		const builder = createBuilder({ weeklyNotesPath: "jYYYY/w" });
+		const { filePath } = builder.buildWeeklyNotePath(1403, 7);
+		expect(filePath).toBe("1403/7");
 	});
 
 	it("still resolves the default daily/weekly/monthly note paths", () => {
