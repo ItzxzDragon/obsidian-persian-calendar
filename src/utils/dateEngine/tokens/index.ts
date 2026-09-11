@@ -1,11 +1,12 @@
 import { gregorianTokens } from "./gregorianTokens";
 import { jalaliTokens } from "./jalaliTokens";
 import { TokenRegistry } from "./registry";
+import { weekTokens } from "./weekTokens";
 
 export function createDefaultTokenRegistry(): TokenRegistry {
 	const registry = new TokenRegistry();
 
-	for (const definition of [...gregorianTokens, ...jalaliTokens]) {
+	for (const definition of [...gregorianTokens, ...jalaliTokens, ...weekTokens]) {
 		registry.register(definition);
 	}
 
