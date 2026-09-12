@@ -69,8 +69,22 @@ You can use dynamic placeholders to customize the paths and filenames of your ca
 | `jD`        | 5        | Jalali day of the month              |
 | `DD`        | 06       | Two-digit Gregorian day of the month |
 | `D`         | 6        | Gregorian day of the month           |
+| `Q`         | 1        | Numeric Gregorian quarter            |
+| `QQ`        | 01       | Two-digit Gregorian quarter          |
+| `QQQ`       | Spr      | Short Gregorian quarter name         |
+| `QQQQ`      | Spring   | Full Gregorian quarter name          |
 
 </div>
+
+`Q` through `QQQQ` represent Gregorian calendar quarters: `Q1`, `Q2`, `Q3`, and `Q4` correspond to Spring, Summer, Autumn, and Winter respectively.
+
+For weekly paths, when the path contains both a week token and at least one date-based token, you can choose whether the date-based tokens are resolved from the **start of the week** or the **end of the week**. This option is available as **Weekly path date anchor** in the weekly note settings.
+
+For example, with a path such as `jYYYY/jMM/ww`, a week may start in one month or year and end in another. The selected anchor determines which side of the week is used to resolve `jYYYY` and `jMM`.
+
+The same behavior applies to Gregorian quarter tokens. If a week crosses a Gregorian quarter boundary, the value of `Q`, `QQ`, `QQQ`, or `QQQQ` depends on whether the anchor is set to the start or end of the week.
+
+The anchor is only relevant when a weekly path contains both a week token and a date-based token. A path containing only a week token, such as `ww`, does not require an anchor.
 
 The brackets tell the path resolver to treat the content as a literal/static name:
 
@@ -196,7 +210,7 @@ _These always return today's date, regardless of the note type._
 | `{{نام ماه جاری}}`      | بهمن (Bahman)                   | Name of the current month  |
 | `{{ماه جاری}}`          | 1404-11                         | Current month identifier   |
 | `{{نام فصل جاری}}`      | زمستان (Winter)                 | Name of the current season |
-| `{{فصل جاری}}`          | <span dir="ltr">1404-S4</span>  | Current season identifier  |
+| `{{فصل جاری}}`          | <span dir="ltr">1404-S4</span> | Current season identifier  |
 | `{{سال جاری}}`          | 1404                            | Current year               |
 | `{{مناسبت جاری}}`       | Event text                      | Today's events             |
 
@@ -249,7 +263,7 @@ pcApi.dateToGregorian(new Date()); // {gy, gm, gd}
 pcApi.gregorianToDate(2026, 12, 4); // Date object
 pcApi.gregorianToJalali(2026, 12, 4); // {jy: 1405, jm: 9, jd: 13}
 pcApi.gregorianToHijri(2026, 12, 4); // (Iran) {hy: 1448, hm: 6, hd: 24}
-pcApi.gregorianToHijri(2026, 12, 4, { base: "umalqura" }); // (Umm al-Qura) {hy: 1448, hm: 6, hd: 24}
+pcApi.gregorianToHijri(2026, 12, 4, { base: "umalqura" }); // (Umm al-Qura basis) {hy: 1448, hm: 6, hd: 24}
 
 // Lunar Hijri date conversion (Iran basis)
 pcApi.hijriToDate(1448, 6, 24); // Date object
