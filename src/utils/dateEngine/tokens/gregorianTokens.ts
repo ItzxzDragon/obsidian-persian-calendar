@@ -3,18 +3,33 @@ import { GREGORIAN_MONTHS_NAME } from "src/constants";
 import type { TTokenDefinition, TLocale } from "src/types";
 import { createNameToken, createNumericToken } from "./tokenFactories";
 
-const GREGORIAN_QUARTERS_NAME: Record<TLocale, Record<number, string>> = {
+const GREGORIAN_SEASONS_NAME: Record<TLocale, Record<number, string>> = {
 	fa: {
-		1: "سه‌ماهه اول",
-		2: "سه‌ماهه دوم",
-		3: "سه‌ماهه سوم",
-		4: "سه‌ماهه چهارم",
+		1: "بهار",
+		2: "تابستان",
+		3: "پاییز",
+		4: "زمستان",
 	},
 	en: {
-		1: "1st quarter",
-		2: "2nd quarter",
-		3: "3rd quarter",
-		4: "4th quarter",
+		1: "Spring",
+		2: "Summer",
+		3: "Autumn",
+		4: "Winter",
+	},
+};
+
+const GREGORIAN_SEASONS_SHORT_NAME: Record<TLocale, Record<number, string>> = {
+	fa: {
+		1: "بهار",
+		2: "تابستان",
+		3: "پاییز",
+		4: "زمستان",
+	},
+	en: {
+		1: "Spr",
+		2: "Sum",
+		3: "Aut",
+		4: "Win",
 	},
 };
 
@@ -66,15 +81,12 @@ export const gregorianTokens: TTokenDefinition[] = [
 		token: "QQQ",
 		family: "gregorian",
 		field: "quarter",
-		namesByLocale: {
-			fa: { 1: "Q1", 2: "Q2", 3: "Q3", 4: "Q4" },
-			en: { 1: "Q1", 2: "Q2", 3: "Q3", 4: "Q4" },
-		},
+		namesByLocale: GREGORIAN_SEASONS_SHORT_NAME,
 	}),
 	createNameToken({
 		token: "QQQQ",
 		family: "gregorian",
 		field: "quarter",
-		namesByLocale: GREGORIAN_QUARTERS_NAME,
+		namesByLocale: GREGORIAN_SEASONS_NAME,
 	}),
 ];
