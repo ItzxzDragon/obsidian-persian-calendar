@@ -12,7 +12,7 @@ import {
 import { toWeekFormat } from "src/utils/formatters";
 import { mapJalaliMonthToGregorianLabel, mapJalaliYearToGregorianLabel } from "./gregorianNaming";
 
-const WEEK_PATH_DATE_FIELDS = new Set(["gy", "gm", "gd", "jy", "jm", "jd", "season"]);
+const WEEK_PATH_DATE_FIELDS = new Set(["gy", "gm", "gd", "jy", "jm", "jd", "season", "quarter"]);
 
 export default class NotePathBuilder {
 	constructor(private readonly plugin: PersianCalendarPlugin) {}
@@ -23,7 +23,7 @@ export default class NotePathBuilder {
 	}
 
 	public buildEngineContext(parts: TDateEngineContext): TDateEngineContext {
-		let { gy, gm, gd, jy, jm, jd, week, season } = parts;
+		let { gy, gm, gd, jy, jm, jd, week, season, quarter } = parts;
 
 		if (jm === undefined && season !== undefined) {
 			jm = 3 * (season - 1) + 1;
@@ -48,7 +48,11 @@ export default class NotePathBuilder {
 			season = jalaliToSeason(jm);
 		}
 
-		return { gy, gm, gd, jy, jm, jd, week, season };
+		if (quarter === undefined && gm !== undefined) {
+			quarter = Math.floor((gm - 1) / 3) + 1;
+		}
+
+		return { gy, gm, gd, jy, jm, jd, week, season, quarter };
 	}
 
 	private resolveFolderPattern(path: string | undefined, context: TDateEngineContext) {
