@@ -25,14 +25,7 @@ export const renderPathSection: SectionRenderer = (ctx, containerEl) => {
 
 		const pathBuilder = new NotePathBuilder(controller.plugin);
 		let anchorVisible = pathBuilder.weeklyPathNeedsAnchor();
-
-		const anchorSetting = new Setting(containerEl).addDropdown((dropdown) => {
-			dropdown.addOption("start", "");
-			dropdown.addOption("end", "");
-			dropdown.setValue(controller.get("weeklyPathAnchor") ?? "start").onChange(async (value) => {
-				await controller.set("weeklyPathAnchor", value as "start" | "end");
-			});
-		});
+		let anchorSetting: Setting;
 
 		const refreshAnchorText = () => {
 			const isFa = controller.plugin.setting.language === "fa";
@@ -72,6 +65,14 @@ export const renderPathSection: SectionRenderer = (ctx, containerEl) => {
 			"folder",
 			{ onBlur: refreshAnchorVisibility },
 		);
+
+		anchorSetting = new Setting(containerEl).addDropdown((dropdown) => {
+			dropdown.addOption("start", "");
+			dropdown.addOption("end", "");
+			dropdown.setValue(controller.get("weeklyPathAnchor") ?? "start").onChange(async (value) => {
+				await controller.set("weeklyPathAnchor", value as "start" | "end");
+			});
+		});
 
 		controller.trackLocale(refreshAnchorText);
 		refreshAnchorText();
