@@ -50,15 +50,15 @@ export const renderPathSection: SectionRenderer = (ctx, containerEl) => {
 			}
 		};
 
-		const refreshAnchorVisibility = (showNotice = false) => {
+		const refreshAnchorVisibility = () => {
 			const nextVisible = pathBuilder.weeklyPathNeedsAnchor();
 			if (nextVisible === anchorVisible) return;
 
 			anchorVisible = nextVisible;
 			anchorSetting.settingEl.style.display = nextVisible ? "flex" : "none";
 
-			if (!nextVisible && showNotice) {
-				new Notice(controller.plugin.setting.language === "fa" ? "تنظیمات مخفی!" : "Settings hidden!");
+			if (nextVisible) {
+				new Notice(controller.plugin.setting.language === "fa" ? "تنظیماتِ مخفی!" : "Hidden settings!");
 			}
 		};
 
@@ -70,7 +70,7 @@ export const renderPathSection: SectionRenderer = (ctx, containerEl) => {
 			noteType.pathDescKey,
 			noteType.pathKey,
 			"folder",
-			{ onBlur: () => refreshAnchorVisibility(true) },
+			{ onBlur: refreshAnchorVisibility },
 		);
 
 		controller.trackLocale(refreshAnchorText);
