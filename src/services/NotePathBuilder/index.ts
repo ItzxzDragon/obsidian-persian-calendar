@@ -72,7 +72,9 @@ export default class NotePathBuilder {
 
 		try {
 			const compiled = compilePattern(path);
-			return compiled.fields.some((field) => WEEK_PATH_DATE_FIELDS.has(field));
+			const hasWeekToken = compiled.fields.includes("week");
+			const hasDateToken = compiled.fields.some((field) => WEEK_PATH_DATE_FIELDS.has(field));
+			return hasWeekToken && hasDateToken;
 		} catch {
 			return false;
 		}
