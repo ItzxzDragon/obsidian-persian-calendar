@@ -21,7 +21,7 @@ describe("Gregorian quarter tokens", () => {
 
 	it("formats QQQ and QQQQ as quarter labels", () => {
 		expect(formatPattern("QQQ", { gm: 4 })).toBe("Q2");
-		expect(formatPattern("QQQQ", { gm: 10 })).toBe("2nd quarter");
+		expect(formatPattern("QQQQ", { gm: 10 })).toBe("4th quarter");
 	});
 
 	it("treats Gregorian quarter tokens as date fields", () => {
