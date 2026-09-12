@@ -42,7 +42,7 @@ describe("Weekly path anchor visibility", () => {
 describe("Weekly path anchor resolution", () => {
 	const calculator = getWeekStartCalculator("jalali-first-day-of-year");
 
-	it("uses the Gregorian quarter at the selected anchor", () => {
+	it("uses the Gregorian season at the selected anchor", () => {
 		const jalali = gregorianToJalali(2026, 3, 30);
 		const { jy: weekYear, weekNumber } = calculator.getWeekNumber(
 			jalaliToDate(jalali.jy, jalali.jm, jalali.jd),
@@ -57,8 +57,8 @@ describe("Weekly path anchor resolution", () => {
 			weekNumber,
 		);
 
-		expect(start.filePath).toContain("2026/1st quarter/");
-		expect(end.filePath).toContain("2026/2nd quarter/");
+		expect(start.filePath).toContain("2026/Spring/");
+		expect(end.filePath).toContain("2026/Summer/");
 	});
 
 	it("resolves Gregorian month and Jalali month from the selected anchor", () => {
