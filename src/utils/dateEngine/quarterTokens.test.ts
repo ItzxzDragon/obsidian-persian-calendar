@@ -11,20 +11,25 @@ const makePlugin = (weeklyNotesPath: string) =>
 		},
 	} as never);
 
-describe("Gregorian quarter tokens", () => {
-	it("formats Q and QQ as numeric quarter values", () => {
+describe("Gregorian season tokens", () => {
+	it("formats Q and QQ as numeric season values", () => {
 		expect(formatPattern("Q", { gm: 1 })).toBe("1");
 		expect(formatPattern("Q", { gm: 12 })).toBe("4");
 		expect(formatPattern("QQ", { gm: 1 })).toBe("01");
 		expect(formatPattern("QQ", { gm: 12 })).toBe("04");
 	});
 
-	it("formats QQQ and QQQQ as quarter labels", () => {
-		expect(formatPattern("QQQ", { gm: 4 })).toBe("Q2");
-		expect(formatPattern("QQQQ", { gm: 10 })).toBe("4th quarter");
+	it("formats QQQ as short season names", () => {
+		expect(formatPattern("QQQ", { gm: 4 })).toBe("Sum");
+		expect(formatPattern("QQQ", { gm: 10 })).toBe("Win");
 	});
 
-	it("treats Gregorian quarter tokens as date fields", () => {
+	it("formats QQQQ as full season names", () => {
+		expect(formatPattern("QQQQ", { gm: 4 })).toBe("Summer");
+		expect(formatPattern("QQQQ", { gm: 10 })).toBe("Winter");
+	});
+
+	it("treats Gregorian season tokens as date fields", () => {
 		expect(compilePattern("YYYY/QQ/ww").fields).toEqual(["gy", "quarter", "week"]);
 	});
 });
@@ -34,6 +39,7 @@ describe("Weekly path anchor visibility", () => {
 		["jYYYY/ww", true],
 		["jYYYY/jMM/ww", true],
 		["jYYYY/jQQQQ/ww", true],
+		["YYYY/QQQQ/ww", true],
 		["ww", false],
 		["Weekly/ww", false],
 	])("for %s returns %s", (path, expected) => {
