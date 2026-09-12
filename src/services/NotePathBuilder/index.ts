@@ -93,14 +93,16 @@ export default class NotePathBuilder {
 		const calculator = getWeekStartCalculator(this.plugin.setting.weekCalculation);
 		const date = jalaliToDate(jy, jm, jd);
 		const { jy: weekYear, weekNumber } = calculator.getWeekNumber(date);
-
-		const nextYearWeekStart = calculator.getStartOfWeek(weekYear + 1, 1);
 		const actualGregorian = jalaliToGregorian(jy, jm, jd);
-		const actualDateKey = actualGregorian.gy * 10000 + actualGregorian.gm * 100 + actualGregorian.gd;
+		const actualCalendarYear = this.plugin.setting.weekCalculation.startsWith("gregorian")
+			? actualGregorian.gy
+			: jy;
+		const nextYearWeekStart = calculator.getStartOfWeek(weekYear + 1, 1);
 		const nextYearWeekStartKey =
 			nextYearWeekStart.gy * 10000 + nextYearWeekStart.gm * 100 + nextYearWeekStart.gd;
+		const actualDateKey = actualGregorian.gy * 10000 + actualGregorian.gm * 100 + actualGregorian.gd;
 
-		if (actualDateKey >= nextYearWeekStartKey && weekYear + 1 !== actualGregorian.gy) {
+		if (actualCalendarYear === weekYear && actualDateKey >= nextYearWeekStartKey) {
 			return { weekYear: weekYear + 1, weekNumber: 1 };
 		}
 
@@ -117,9 +119,7 @@ export default class NotePathBuilder {
 	public buildDailyNotePath(jy: number, jm: number, jd: number) {
 		const dateString = this.buildDailyNoteFileName(jy, jm, jd);
 		const { gy, gm, gd } = jalaliToGregorian(jy, jm, jd);
-		const { weekNumber } = getWeekStartCalculator(this.plugin.setting.weekCalculation).getWeekNumber(
-			jalaliToDate(jy, jm, jd),
-		);
+		const { weekNumber } = this.getDailyWeekContext(jy, jm, jd);
 
 		const notesLocation = this.plugin.setting.dailyNotesPath;
 		const filePath = this.buildNotePath(notesLocation, `${dateString}.md`, {
