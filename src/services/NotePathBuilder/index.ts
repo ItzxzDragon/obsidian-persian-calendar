@@ -5,6 +5,7 @@ import { compilePattern, formatPattern } from "src/utils/dateEngine";
 import {
 	getWeekStartCalculator,
 	gregorianToJalali,
+	jalaliToDate,
 	jalaliToGregorian,
 	jalaliToSeason,
 } from "src/utils/dateUtils";
@@ -88,6 +89,24 @@ export default class NotePathBuilder {
 			: calculator.getStartOfWeek(jy, weekNumber);
 	}
 
+	private getDailyWeekContext(jy: number, jm: number, jd: number) {
+		const calculator = getWeekStartCalculator(this.plugin.setting.weekCalculation);
+		const date = jalaliToDate(jy, jm, jd);
+		const { jy: weekYear, weekNumber } = calculator.getWeekNumber(date);
+
+		const nextYearWeekStart = calculator.getStartOfWeek(weekYear + 1, 1);
+		const actualGregorian = jalaliToGregorian(jy, jm, jd);
+		const actualDateKey = actualGregorian.gy * 10000 + actualGregorian.gm * 100 + actualGregorian.gd;
+		const nextYearWeekStartKey =
+			nextYearWeekStart.gy * 10000 + nextYearWeekStart.gm * 100 + nextYearWeekStart.gd;
+
+		if (actualDateKey >= nextYearWeekStartKey && weekYear + 1 !== actualGregorian.gy) {
+			return { weekYear: weekYear + 1, weekNumber: 1 };
+		}
+
+		return { weekYear, weekNumber };
+	}
+
 	public buildDailyNoteFileName(jy: number, jm: number, jd: number) {
 		const { gy, gm, gd } = jalaliToGregorian(jy, jm, jd);
 		const context = this.buildEngineContext({ jy, jm, jd, gy, gm, gd });
@@ -98,6 +117,7 @@ export default class NotePathBuilder {
 	public buildDailyNotePath(jy: number, jm: number, jd: number) {
 		const dateString = this.buildDailyNoteFileName(jy, jm, jd);
 		const { gy, gm, gd } = jalaliToGregorian(jy, jm, jd);
+		const { weekNumber } = this.getDailyWeekContext(jy, jm, jd);
 		const notesLocation = this.plugin.setting.dailyNotesPath;
 		const filePath = this.buildNotePath(notesLocation, `${dateString}.md`, {
 			jy,
@@ -106,6 +126,7 @@ export default class NotePathBuilder {
 			gy,
 			gm,
 			gd,
+			week: weekNumber,
 		});
 
 		return { filePath, dateString };
