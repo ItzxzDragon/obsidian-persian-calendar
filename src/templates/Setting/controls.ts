@@ -89,11 +89,14 @@ export function addPath<K extends StringKey>(
 	descKey: string | null,
 	key: K,
 	mode: TPathSuggestMode,
+	opts: { onBlur?: () => void } = {},
 ): Setting {
 	const setting = new Setting(containerEl).addText((text) => {
 		text.setValue(controller.get(key)).onChange(async (value) => {
 			await controller.set(key, value as TSetting[K], { debounce: true });
 		});
+
+		text.inputEl.addEventListener("blur", () => opts.onBlur?.());
 
 		new PathSuggest(app, text.inputEl, mode);
 	});
