@@ -58,7 +58,7 @@ export const renderPathSection: SectionRenderer = (ctx, containerEl) => {
 			anchorSetting.settingEl.style.display = nextVisible ? "flex" : "none";
 
 			if (nextVisible) {
-				new Notice(controller.plugin.setting.language === "fa" ? "تنظیماتِ مخفی!" : "Hidden settings!");
+				new Notice(controller.plugin.setting.language === "fa" ? "واقعاً این همه پوشه لازمه؟" : "Do we really need this many folders?");
 			}
 		};
 
