@@ -5,6 +5,7 @@ import { compilePattern, formatPattern } from "src/utils/dateEngine";
 import {
 	getWeekStartCalculator,
 	gregorianToJalali,
+	jalaliToDate,
 	jalaliToGregorian,
 	jalaliToSeason,
 } from "src/utils/dateUtils";
@@ -98,6 +99,10 @@ export default class NotePathBuilder {
 	public buildDailyNotePath(jy: number, jm: number, jd: number) {
 		const dateString = this.buildDailyNoteFileName(jy, jm, jd);
 		const { gy, gm, gd } = jalaliToGregorian(jy, jm, jd);
+		const { weekNumber } = getWeekStartCalculator(this.plugin.setting.weekCalculation).getWeekNumber(
+			jalaliToDate(jy, jm, jd),
+		);
+
 		const notesLocation = this.plugin.setting.dailyNotesPath;
 		const filePath = this.buildNotePath(notesLocation, `${dateString}.md`, {
 			jy,
@@ -106,6 +111,7 @@ export default class NotePathBuilder {
 			gy,
 			gm,
 			gd,
+			week: weekNumber,
 		});
 
 		return { filePath, dateString };
