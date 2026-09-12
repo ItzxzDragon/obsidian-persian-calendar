@@ -43,7 +43,6 @@ describe("Weekly path anchor resolution", () => {
 	const calculator = getWeekStartCalculator("jalali-first-day-of-year");
 
 	it("uses the Gregorian quarter at the selected anchor", () => {
-		// 2026-03-30 is in Q1, while the same Saturday-based week ends in April/Q2.
 		const jalali = gregorianToJalali(2026, 3, 30);
 		const { jy: weekYear, weekNumber } = calculator.getWeekNumber(
 			jalaliToDate(jalali.jy, jalali.jm, jalali.jd),
