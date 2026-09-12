@@ -68,6 +68,7 @@ describe("NotePathBuilder.buildEngineContext", () => {
 			gm: 7,
 			gd: 1,
 			season: 2,
+			quarter: 3,
 			week: undefined,
 		});
 	});
