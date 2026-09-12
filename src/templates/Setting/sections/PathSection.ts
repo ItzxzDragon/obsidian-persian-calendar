@@ -26,17 +26,6 @@ export const renderPathSection: SectionRenderer = (ctx, containerEl) => {
 		const pathBuilder = new NotePathBuilder(controller.plugin);
 		let anchorVisible = pathBuilder.weeklyPathNeedsAnchor();
 
-		const pathSetting = addPath(
-			app,
-			controller,
-			containerEl,
-			noteType.pathNameKey,
-			noteType.pathDescKey,
-			noteType.pathKey,
-			"folder",
-			{ onBlur: () => refreshAnchorVisibility(true) },
-		);
-
 		const anchorSetting = new Setting(containerEl).addDropdown((dropdown) => {
 			dropdown.addOption("start", "");
 			dropdown.addOption("end", "");
@@ -73,10 +62,19 @@ export const renderPathSection: SectionRenderer = (ctx, containerEl) => {
 			}
 		};
 
+		addPath(
+			app,
+			controller,
+			containerEl,
+			noteType.pathNameKey,
+			noteType.pathDescKey,
+			noteType.pathKey,
+			"folder",
+			{ onBlur: () => refreshAnchorVisibility(true) },
+		);
+
 		controller.trackLocale(refreshAnchorText);
 		refreshAnchorText();
 		anchorSetting.settingEl.style.display = anchorVisible ? "flex" : "none";
-
-		void pathSetting;
 	}
 };
