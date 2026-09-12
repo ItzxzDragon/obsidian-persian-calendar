@@ -175,6 +175,7 @@ export type TDateEngineContext = {
 	jd?: number;
 	week?: number;
 	season?: number;
+	quarter?: number;
 };
 
 export type TTokenField = keyof TDateEngineContext;
@@ -232,6 +233,10 @@ export type TToken =
 	| "YY"
 	| "jYYYY"
 	| "jYY"
+	| "QQQQ"
+	| "QQQ"
+	| "QQ"
+	| "Q"
 	| "jQQQQ"
 	| "jQQ"
 	| "jQ"
