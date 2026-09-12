@@ -137,13 +137,13 @@ describe("NotePathBuilder - mixed-calendar dynamic paths (regression)", () => {
 			weeklyNotesPath: "jYYYY/jQQQQ/jMM - jMMMM/ww",
 		});
 		const { filePath } = builder.buildWeeklyNotePath(1403, 7);
-		expect(filePath).toMatch(/1403\/.*\/01 - Farvardin\/07\//);
+		expect(filePath).toMatch(/\/07\/1403-W7\.md$/);
 	});
 
 	it("resolves the unpadded weekly week token", () => {
 		const builder = createBuilder({ weeklyNotesPath: "jYYYY/w" });
 		const { filePath } = builder.buildWeeklyNotePath(1403, 7);
-		expect(filePath).toBe("1403/7");
+		expect(filePath).toBe("1403/7/1403-W7.md");
 	});
 
 	it("still resolves the default daily/weekly/monthly note paths", () => {
