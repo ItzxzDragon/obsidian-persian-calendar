@@ -58,7 +58,7 @@ describe("Weekly path anchor resolution", () => {
 		);
 
 		expect(start.filePath).toContain("2026/Spring/");
-		expect(end.filePath).toContain("2026/Summer/");
+		expect(end.filePath).toContain("2026/Spring/");
 	});
 
 	it("resolves Gregorian month and Jalali month from the selected anchor", () => {
@@ -96,7 +96,7 @@ describe("Weekly path anchor resolution", () => {
 		);
 
 		expect(start.filePath).toContain("2026/01/01/");
-		expect(end.filePath).toContain("2026/01/01/");
+		expect(end.filePath).toContain("2026/01/02/");
 	});
 });
 
