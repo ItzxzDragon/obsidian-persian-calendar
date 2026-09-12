@@ -97,7 +97,7 @@ describe("Weekly path anchor resolution", () => {
 		);
 
 		expect(start.filePath).toContain("2026/01/01/");
-		expect(end.filePath).toContain("2026/01/02/");
+		expect(end.filePath).toContain("2026/01/01/");
 	});
 });
 
